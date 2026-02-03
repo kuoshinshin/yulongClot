@@ -10,6 +10,7 @@ const categories = ref(['all', '电子设备', '汽车配件', '家居用品', '
 const currentLanguage = ref('zh'); // zh: 中文, en: 英文
 const showModal = ref(false);
 const selectedProduct = ref(null);
+const currentImageIndex = ref(0);
 
 // 语言切换
 const toggleLanguage = () => {
@@ -193,6 +194,12 @@ const viewProductDetail = (product) => {
 const closeModal = () => {
   showModal.value = false;
   selectedProduct.value = null;
+  currentImageIndex.value = 0;
+};
+
+// 切换图片
+const changeImage = (index) => {
+  currentImageIndex.value = index;
 };
 </script>
 
@@ -281,7 +288,7 @@ const closeModal = () => {
           <!-- 产品图片轮播 -->
           <div class="modal-image-gallery">
             <div class="main-image">
-              <img :src="selectedProduct?.images[0]" :alt="selectedProduct?.name">
+              <img :src="selectedProduct?.images[currentImageIndex]" :alt="selectedProduct?.name">
             </div>
             <div class="thumbnail-images">
               <img 
@@ -290,7 +297,8 @@ const closeModal = () => {
                 :src="img" 
                 :alt="`${selectedProduct?.name} - 角度 ${index + 1}`"
                 class="thumbnail"
-                :class="{ active: index === 0 }"
+                :class="{ active: index === currentImageIndex }"
+                @click="changeImage(index)"
               >
             </div>
           </div>
